@@ -1,1 +1,1 @@
-"# minor-WebOfThingsDemo" 
+# minor-WebOfThingsDemo
