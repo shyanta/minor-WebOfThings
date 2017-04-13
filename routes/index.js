@@ -26,4 +26,9 @@ router.get('/test', function(req, res){
     res.render("test",{title: counter});
 });
 
+router.get('/reset', function(req, res){
+    counter = 0;
+    res.render("test",{title: counter});
+});
+
 module.exports = router;
