@@ -118,7 +118,7 @@ void sendButtonPress()
   printDebugMessage("Sending button press to server");
   HTTPClient http;
 
-  http.begin("http://b4a6333b.ngrok.io/");
+  http.begin("http://a0e7205a.ngrok.io");
   http.GET();
   
   http.begin(serverURL + "/api.php?t=sqi&d=" + chipID);
