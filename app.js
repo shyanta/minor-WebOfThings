@@ -9,6 +9,7 @@ var bodyParser = require('body-parser');
 var exphbs  = require('express-handlebars');
 
 var routes = require('./routes/index');
+var teacherRoute = require('./routes/teacher');
 
 var app = express();
 
@@ -35,6 +36,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
+app.use('/teacher', teacherRoute);
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
