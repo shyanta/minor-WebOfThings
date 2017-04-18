@@ -18,17 +18,12 @@ router.get('/reset', function(req, res){
     io.emit('reset');
     counter = 0;
 
-
     students.forEach(function(student){
         // Give students feedback
         request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sdc&d='+teacherId+'&td='+ student + '&c=00ff00&m=Iedereensnapthet!', function(error, response, data){
             if(error){ throw error; }
-            // console.log('reset',data);
-            // console.log(student);
 
-            request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sqi&d='+ teacherId, function (error, response, message){
-                console.log(message);
-            });
+            request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sqi&d='+ teacherId, function (error, response, message){ return "Ghellooo"});
         });
     });
 
@@ -36,6 +31,7 @@ router.get('/reset', function(req, res){
         // Remove all students
         request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=rdc&d='+student+'&td='+ teacherId + '&c=00ff00', function(error, response, data){
             if(error){ throw error; }
+            students.pop(student);
         });
     });
     res.send('test');
