@@ -10,7 +10,7 @@ router.get('/', function(req, res){
   ];
 
   studentID.forEach(function(student){
-    request(('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sdc&d=180F&td='+ student + '&c=00ff00&m=Iedereensnapthet!'), function(error, response, data){
+    request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sdc&d=180F&td='+ student + '&c=00ff00&m=Iedereensnapthet!', function(error, response, data){
       if(error){
         console.log(error);
         console.log('level 1: NIET');
