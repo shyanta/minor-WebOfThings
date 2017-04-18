@@ -9,11 +9,10 @@ router.get('/', function(req, res){
     var { io } = req;
 
     request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sdc&d=180F&td=8EA6&c=ff6200&m=Hoi', function (error, response, data){
-        console.log(data);
         request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sqi&d=180F', function (error, response, message){
             counter++;
             io.emit('counter', counter);
-
+            console.log(counter);
             res.render('test',{title: counter});
         });
     });
