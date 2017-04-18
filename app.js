@@ -11,6 +11,7 @@ var express = require('express'),
 
 var routes = require('./routes/index');
 var teacherRoute = require('./routes/teacher');
+var weatherRoute = require('./routes/weather');
 
 var app = express(),
     port = process.env.PORT || 3000;
@@ -43,8 +44,10 @@ app.use(function(req, res, next) {
     req.io = io;
     next();
 });
-app.use('/', routes);
+
+app.use('/weather', weatherRoute);
 app.use('/teacher', teacherRoute);
+app.use('/', routes);
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
