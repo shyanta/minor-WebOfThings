@@ -1,4 +1,4 @@
-# Explain this
+# Explain this sh*t
 
 ## Introduction
 A few years ago we were able to connect devices from the same manufacture and we called it Internet of Things (IoT). IoT had limitations since devices could only connect if they had the same manufacturer and weren't able to connect to other devices while the name suggests otherwise. As a reaction the term Web of Things was created, the name mocking IoT. Using the web every device could connect. In this project we explore the possibilities of the Web of Things.

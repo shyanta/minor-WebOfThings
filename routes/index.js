@@ -56,17 +56,9 @@ router.get('/:chipId', function(req,res){
         students.push(chipId);
     }
 
-    if (counter < 2) {
-        color = '00FF00';
-    } else if (counter == 2 || counter == 3) {
-        color = 'FFF000';
-    } else if (counter == 4 || counter == 5) {
-        color = 'FF6200';
-    } else if (counter >= 6) {
-        color = 'FF0000';
-    }
+	color = ['00ff00', 'fff000', 'ff6200', 'ff0000'];
 
-    request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sdc&d='+chipId+'&td='+teacherId+'&c='+color+'&m=Hoi', function (error, response, data){
+    request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sdc&d='+chipId+'&td='+teacherId+'&c='+color[counter]+'&m=Hoi', function (error, response, data){
         request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sqi&d='+chipId, function (error, response, message){
             counter++;
             io.emit('counter', counter);
