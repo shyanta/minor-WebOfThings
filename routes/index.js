@@ -54,7 +54,12 @@ router.get('/:chipId', function(req,res){
 
     if (!students.includes(chipId)) {
         students.push(chipId);
-    }
+    } else {
+		students.pop(chipId);
+	}
+	if (students.length == 0){
+		res.redirect('/reset');
+	}
 
     if (counter < 2) {
         color = '00FF00';
