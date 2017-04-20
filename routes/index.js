@@ -38,7 +38,7 @@ router.get('/reset', function(req, res){
 });
 
 
-router.get("/test", function(req,res){
+router.get('/test', function(req,res){
     var { arduinoPort } = req;
 
     arduinoPort.on('data', function(data) {

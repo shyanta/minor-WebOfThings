@@ -20,7 +20,7 @@ var io = socketIO.listen(server);
 
 var arduinoPort = new serialPort('/dev/cu.SLAB_USBtoUART', {
     baudrate: 9600,
-    parser: serialPort.parsers.readline("\n")
+    parser: serialPort.parsers.readline('\n')
 });
 
 var env = process.env.NODE_ENV || 'development';
@@ -102,7 +102,7 @@ io.on('connection', function (socket) {
 
 // Arduino port
 arduinoPort.on('open', function(data) {
-    console.log("Serial port works");
+    console.log('Serial port works');
 });
 
 
