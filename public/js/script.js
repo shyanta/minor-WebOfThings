@@ -25,13 +25,16 @@ function buildTweet(object){
     var tweet = document.createElement('li');
     tweet.innerHTML = `
         <li>
-            <img src='${object.user.profile_background_image_url}'/>
-            <a href='https://twitter.com/${object.screen_name}'>${object.user.name}</a>
-            <a href='https://twitter.com/${object.screen_name}'>@${object.user.screen_name}</a>
+            <img class="profilepicture" src='${object.user.profile_background_image_url}'/>
+            <a class="name" href='https://twitter.com/${object.screen_name}'>${object.user.name}</a>
+            <a class="username" href='https://twitter.com/${object.screen_name}'>@${object.user.screen_name}</a>
                 <time class='time'>
                     ${object.created_at}
                 </time>
-                <p class='tweetcontent'>${object.text}</p>
+                <p class='tweetcontent'>
+                    <span class="hash">&#35;minorrealtimewebcollege</span>
+                    ${object.text}
+                </p>
         </li>
     `;
     return tweet;

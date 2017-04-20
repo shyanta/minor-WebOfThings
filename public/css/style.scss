@@ -1,8 +1,111 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    background-color: #1d7eeb;
+    color: white;
+    padding: 0;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+h1 {
+    font-size: 3em;
+    text-transform: uppercase;
+}
+
+h2 {
+    color: lightblue;
+    font-size: 1.2em;
+    font-weight: lighter;
+    margin: 0;
 }
 
 a {
-  color: #00B7FF;
+    color: #00B7FF;
+}
+
+.dashboard {
+    margin: auto;
+    max-width: 40rem;
+}
+
+.block-part {
+    background-color: #186dcb;
+    border-radius: 4px;
+    box-sizing: border-box;
+    display: inline-block;
+    margin: 0;
+    padding: 1em;
+    width: calc(50% - 0.5rem);
+    &:nth-of-type(2n){
+        margin-left: 1rem;
+        float: right;
+    }
+    &:not(:last-of-type){
+        margin-bottom: 1rem;
+    }
+}
+
+
+.profilepicture {
+    border-radius: 4px;
+    float: left;
+    margin-right: 0.8em;
+    width: 4rem;
+}
+
+.arduinovalues {
+    font-size: 4em;
+    margin: 1rem 0 0 0;
+}
+
+
+.stream {
+    width: 100%;
+    a {
+        text-decoration: none;
+    }
+}
+
+
+a.name {
+    color: black;
+    font-weight: bold;
+}
+
+a.username {
+    color: #9d9d9d;
+}
+
+.time {
+    color: #9d9d9d;
+    display: inline;
+    &::before {
+        content: '• ';
+    }
+}
+
+
+.tweetcontent {
+    font-size: 1.2em;
+    margin-bottom: 0.8rem;
+    margin-left: 4.7rem;
+}
+
+.hash {
+    font-weight: bold;
+}
+
+.stream ul {
+    margin-bottom: 0;
+    padding-left: 0;
+    li {
+        background-color: white;
+        border-radius: 4px;
+        color: black;
+        list-style: none;
+        padding: 0.7em;
+    }
+}
+
+
+.stream li:not(:last-of-type) {
+    margin-bottom: 1rem;
 }

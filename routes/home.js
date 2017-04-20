@@ -8,15 +8,25 @@ var color ;
 var teacherId = '8EA6';
 var students = [];
 
+
 router.get('/', function(req, res){
     var { twitter, io } = req;
+    var currentTemperature = 22,
+    currentHumidity = 25,
+    amounOfClicks = 15,
+    latestClick = '13:15';
 
     twitter.stream('statuses/filter', {track: 'chanel'})
     .on('data', function(tweet) {
         io.emit('new tweet', tweet);
     });
 
-    res.render('index');
+    res.render('dashboard', {
+        currentTemperature: currentTemperature,
+        currentHumidity: currentHumidity,
+        amounOfClicks: amounOfClicks,
+        latestClick: latestClick
+    });
 });
 
 
