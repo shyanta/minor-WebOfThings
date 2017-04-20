@@ -6,7 +6,8 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     exphbs  = require('express-handlebars'),
     http = require('http'),
-    socketIO = require('socket.io');
+    socketIO = require('socket.io'),
+    serialPort = require('serialport');
 
 
 var routes = require('./routes/index');
@@ -16,6 +17,11 @@ var app = express(),
     port = process.env.PORT || 3000;
 var server = http.Server(app);
 var io = socketIO.listen(server);
+
+var arduinoPort = new serialPort('/dev/cu.SLAB_USBtoUART', {
+    baudrate: 9600,
+    parser: serialPort.parsers.readline("\n")
+});
 
 var env = process.env.NODE_ENV || 'development';
 app.locals.ENV = env;
@@ -41,6 +47,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Make socket available in all reqs
 app.use(function(req, res, next) {
     req.io = io;
+    next();
+});
+app.use(function(req, res, next) {
+    req.arduinoPort = arduinoPort;
     next();
 });
 app.use('/', routes);
@@ -87,6 +97,12 @@ io.on('connection', function (socket) {
     socket.on('my other event', function (data) {
         console.log(data);
     });
+});
+
+
+// Arduino port
+arduinoPort.on('open', function(data) {
+    console.log("Serial port works");
 });
 
 

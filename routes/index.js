@@ -37,6 +37,17 @@ router.get('/reset', function(req, res){
     res.send('test');
 });
 
+
+router.get("/test", function(req,res){
+    var { arduinoPort } = req;
+
+    arduinoPort.on('data', function(data) {
+        console.log(data);
+    });
+    res.send(req.roomAir);
+});
+
+
 router.get('/:chipId', function(req,res){
     var { chipId } = req.params;
     var { io } = req;
@@ -64,4 +75,6 @@ router.get('/:chipId', function(req,res){
         });
     });
 });
+
+
 module.exports = router;
