@@ -21,10 +21,10 @@ var server = http.Server(app),
     io = socketIO.listen(server);
 
 var client = new Twitter({
-    "consumer_key": process.env.TW_KEY,
-    "consumer_secret": process.env.TW_SECRET,
-    "access_token_key": process.env.token_KEY,
-    "access_token_secret": process.env.token_SECRET
+    'consumer_key': process.env.TW_KEY,
+    'consumer_secret': process.env.TW_SECRET,
+    'access_token_key': process.env.token_KEY,
+    'access_token_secret': process.env.token_SECRET
 });
 
 
@@ -107,7 +107,7 @@ app.use(function(err, req, res) {
 
 // socket
 io.on('connection', function (socket) {
-    console.log("io connection");
+    console.log('io connection');
     socket.on('check tweet', function(){
         client.get('search/tweets', {q: 'amsterdam'}, function(error, tweets, response) {
             socket.emit('new tweets', tweets.statuses);

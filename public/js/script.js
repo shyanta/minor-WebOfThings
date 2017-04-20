@@ -22,16 +22,16 @@ io.on('new tweet', function(tweet){
 });
 
 function buildTweet(object){
-    var tweet = document.createElement("li")
+    var tweet = document.createElement('li');
     tweet.innerHTML = `
         <li>
-            <img src="${object.user.profile_background_image_url}"/>
-            <a href="https://twitter.com/${object.screen_name}">${object.user.name}</a>
-            <a href="https://twitter.com/${object.screen_name}">@${object.user.screen_name}</a>
-                <time class="time">
+            <img src='${object.user.profile_background_image_url}'/>
+            <a href='https://twitter.com/${object.screen_name}'>${object.user.name}</a>
+            <a href='https://twitter.com/${object.screen_name}'>@${object.user.screen_name}</a>
+                <time class='time'>
                     ${object.created_at}
                 </time>
-                <p class="tweetcontent">${object.text}</p>
+                <p class='tweetcontent'>${object.text}</p>
         </li>
     `;
     return tweet;

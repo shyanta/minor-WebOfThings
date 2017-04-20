@@ -13,7 +13,7 @@ router.get('/', function(req, res){
 
     twitter.stream('statuses/filter', {track: 'chanel'})
     .on('data', function(tweet) {
-        io.emit("new tweet", tweet);
+        io.emit('new tweet', tweet);
     });
 
     res.render('index');
