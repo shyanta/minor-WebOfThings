@@ -1,3 +1,4 @@
+require('dotenv').config();
 
 var express = require('express'),
     path = require('path'),
@@ -7,16 +8,25 @@ var express = require('express'),
     exphbs  = require('express-handlebars'),
     http = require('http'),
     socketIO = require('socket.io'),
-    serialPort = require('serialport');
+    serialPort = require('serialport'),
+    Twitter = require('twitter');
 
 
 var routes = require('./routes/index');
-var teacherRoute = require('./routes/teacher');
 
 var app = express(),
     port = process.env.PORT || 3000;
-var server = http.Server(app);
-var io = socketIO.listen(server);
+
+var server = http.Server(app),
+    io = socketIO.listen(server);
+
+var client = new Twitter({
+    "consumer_key": process.env.TW_KEY,
+    "consumer_secret": process.env.TW_SECRET,
+    "access_token_key": process.env.token_KEY,
+    "access_token_secret": process.env.token_SECRET
+});
+
 
 var arduinoPort = new serialPort('/dev/cu.SLAB_USBtoUART', {
     baudrate: 9600,
@@ -44,17 +54,20 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Make socket available in all reqs
+// Make stuff available in all reqs
 app.use(function(req, res, next) {
     req.io = io;
-    next();
-});
-app.use(function(req, res, next) {
     req.arduinoPort = arduinoPort;
+    req.twitter = client;
     next();
 });
-app.use('/', routes);
-app.use('/teacher', teacherRoute);
+
+// connect all routes
+for (var x in routes) {
+    if (routes.hasOwnProperty(x)) {
+        app.use(x, routes[x]);
+    }
+}
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -91,11 +104,14 @@ app.use(function(err, req, res) {
 });
 
 
+
 // socket
 io.on('connection', function (socket) {
-    socket.emit('news', { hello: 'world' });
-    socket.on('my other event', function (data) {
-        console.log(data);
+    console.log("io connection");
+    socket.on('check tweet', function(){
+        client.get('search/tweets', {q: 'amsterdam'}, function(error, tweets, response) {
+            socket.emit('new tweets', tweets.statuses);
+        });
     });
 });
 
