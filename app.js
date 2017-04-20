@@ -18,7 +18,7 @@ var app = express(),
 var server = http.Server(app);
 var io = socketIO.listen(server);
 
-var arduinoPort = new serialPort('/dev/cu.SLAB_USBtoUART', {
+var arduinoPort = new serialPort('COM3', {
     baudrate: 9600,
     parser: serialPort.parsers.readline('\n')
 });
