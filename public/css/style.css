@@ -4,3 +4,7 @@ body {
 
 a {
   color: #00B7FF; }
+
+.profilepicture {
+  border-radius: 4px;
+  width: 4rem; }

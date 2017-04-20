@@ -9,7 +9,16 @@ var teacherId = '8EA6';
 var students = [];
 
 router.get('/', function(req, res){
-    res.send('push the button');
+    var currentTemperature = 22,
+    currentHumidity = 25,
+    amounOfClicks = 15,
+    latestClick = '13:15';
+    res.render('dashboard', {
+        currentTemperature: currentTemperature,
+        currentHumidity: currentHumidity,
+        amounOfClicks: amounOfClicks,
+        latestClick: latestClick
+    });
 });
 
 router.get('/reset', function(req, res){
