@@ -10,9 +10,9 @@ var students = [];
 
 router.get('/', function(req, res){
     var currentTemperature = 22,
-    currentHumidity = 25,
-    amounOfClicks = 15,
-    latestClick = '13:15';
+        currentHumidity = 25,
+        amounOfClicks = 15,
+        latestClick = '13:15';
     res.render('dashboard', {
         currentTemperature: currentTemperature,
         currentHumidity: currentHumidity,
