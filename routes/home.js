@@ -11,6 +11,7 @@ var students = [];
 
 router.get('/', function(req, res){
     var { twitter, io } = req;
+
     var currentTemperature = 22,
     currentHumidity = 25,
     amounOfClicks = 15,
@@ -53,7 +54,7 @@ router.get('/reset', function(req, res){
             students.splice(students.indexOf(student));
         });
     });
-    res.send('test');
+    res.render('test',{title: counter});
 });
 
 // TODO: Is unused, should be removed
@@ -74,7 +75,12 @@ router.get('/:chipId', function(req,res){
     // toggles if a student understand
     if (!students.includes(chipId)) {
         students.push(chipId);
+
         counter++;
+        io.on('connection', function(client){
+            io.emit('counter click', counter);
+        });
+
         request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sdc&d='+chipId+'&td='+chipId+'&c=ff0000', function (error, response, data){
             request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sqi&d='+chipId, function (error, response, message){
                 console.log(chipId + ' snapt het niet');
@@ -103,10 +109,11 @@ router.get('/:chipId', function(req,res){
     // checks if students understand. If so? Turns teacher to green else give it the proper color
     if (students.length == 0){
     	counter = 0;
-    	console.log(counter + 'hoi');
+
     	request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sdc&d='+chipId+'&td='+teacherId+'&c=00FF00', function (error, response, data){
     		request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sqi&d='+chipId, function (error, response, message){
     			console.log('reset teacher to green');
+                res.render('test',{title: counter});
     		});
     	});
     } else {

@@ -8,7 +8,7 @@ var express = require('express'),
     exphbs  = require('express-handlebars'),
     http = require('http'),
     socketIO = require('socket.io'),
-    // serialPort = require('serialport'),
+    serialPort = require('serialport'),
     Twitter = require('twitter');
 
 
@@ -28,10 +28,10 @@ var client = new Twitter({
 });
 
 
-// var arduinoPort = new serialPort('/dev/cu.SLAB_USBtoUART', {
-//     baudrate: 9600,
-//     parser: serialPort.parsers.readline('\n')
-// });
+var arduinoPort = new serialPort('/dev/cu.SLAB_USBtoUART', {
+    baudrate: 115200,
+    parser: serialPort.parsers.readline('\n')
+});
 
 var env = process.env.NODE_ENV || 'development';
 app.locals.ENV = env;
@@ -57,7 +57,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Make stuff available in all reqs
 app.use(function(req, res, next) {
     req.io = io;
-    // req.arduinoPort = arduinoPort;
+    req.arduinoPort = arduinoPort;
     req.twitter = client;
     next();
 });
@@ -103,6 +103,11 @@ app.use(function(err, req, res) {
     });
 });
 
+//
+// Arduino port
+arduinoPort.on('open', function(data) {
+    console.log('Serial port works');
+});
 
 
 // socket
@@ -113,13 +118,16 @@ io.on('connection', function (socket) {
             socket.emit('new tweets', tweets.statuses);
         });
     });
-});
 
-// 
-// // Arduino port
-// arduinoPort.on('open', function(data) {
-//     console.log('Serial port works');
-// });
+    arduinoPort.on('data', function(data){
+        data = JSON.parse(data);
+        console.log(data);
+        
+        socket.emit('sensorData', data);
+    });
+
+
+});
 
 
 server.listen(port, function() {

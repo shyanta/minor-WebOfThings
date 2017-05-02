@@ -1,5 +1,11 @@
 var io = io(),
-    ul = document.querySelector('body ul');
+    ul = document.querySelector('body ul'),
+    temperature = document.querySelector('p#temperature'),
+    humidity = document.querySelector('p#humidity'),
+    clicks = document.querySelector('p#clicks'),
+    clicksDate = document.querySelector('p#clicks-date'),
+    clickCount = 0;
+
 // // Whenever there is news
 // socket.on('', function (counter) {
 //     // Catch server response
@@ -17,8 +23,36 @@ var io = io(),
 
 
 io.on('new tweet', function(tweet){
-    console.log(tweet);
     ul.insertAdjacentElement('afterbegin', buildTweet(tweet));
+});
+
+io.on('sensorData', function(data){
+    console.log(data);
+    temperature.innerHTML = Math.floor(data.temperature)+"°C";
+    humidity.innerHTML = Math.floor(data.humidity)+"%";
+});
+
+io.on('counter click', function(){
+    clickCount++;
+    
+    var date = {
+        total: new Date,
+        hours: function(){console.log(this);return this.total.getHours() },
+        minutes: function(){return this.total.getMinutes() },
+        formated: function(){
+            if (this.hours() < 10) {
+                this.hours() = 0+this.hours();
+            }
+            if (this.minutes() < 10) {
+                this.minutes() = 0+this.minutes();
+            }
+            return this.hours()+":"+this.minutes();
+        }
+    };
+
+    console.log(clicks);
+    clicks.innerHTML = clickCount;
+    clicksDate.innerHTML = date.formated();
 });
 
 function buildTweet(object){
