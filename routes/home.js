@@ -29,12 +29,13 @@ router.get('/', function(req, res){
     });
 });
 
-
+// TODO: Is unused, should be removed
 router.get('/reset', function(req, res){
     var { io } = req;
 
     io.emit('reset');
     counter = 0;
+    console.log('reset');
 
     students.forEach(function(student){
         // Give students feedback
@@ -49,13 +50,13 @@ router.get('/reset', function(req, res){
         // Remove all students
         request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=rdc&d='+student+'&td='+ teacherId + '&c=00ff00', function(error, response, data){
             if(error){ throw error; }
-            students.pop(student);
+            students.splice(students.indexOf(student));
         });
     });
     res.send('test');
 });
 
-
+// TODO: Is unused, should be removed
 router.get('/test', function(req,res){
     var { arduinoPort } = req;
 
@@ -70,28 +71,54 @@ router.get('/:chipId', function(req,res){
     var { chipId } = req.params;
     var { io } = req;
 
+    // toggles if a student understand
     if (!students.includes(chipId)) {
         students.push(chipId);
+        counter++;
+        request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sdc&d='+chipId+'&td='+chipId+'&c=ff0000', function (error, response, data){
+            request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sqi&d='+chipId, function (error, response, message){
+                console.log(chipId + ' snapt het niet');
+            });
+        });
+    } else {
+        students.splice(students.indexOf(chipId),1);
+        request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sdc&d='+chipId+'&td='+chipId+'&c=00ff00', function (error, response, data){
+            request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sqi&d='+chipId, function (error, response, message){
+                console.log(chipId + ' snapt het weer');
+            });
+        });
     }
 
-    if (counter < 2) {
+    // change the color depending on the amount of students who clicked
+    if (counter === 0) {
         color = '00FF00';
-    } else if (counter == 2 || counter == 3) {
+    } else if (counter == 1) {
         color = 'FFF000';
-    } else if (counter == 4 || counter == 5) {
+    } else if (counter == 2) {
         color = 'FF6200';
-    } else if (counter >= 6) {
+    } else if (counter >= 3) {
         color = 'FF0000';
     }
 
-    request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sdc&d='+chipId+'&td='+teacherId+'&c='+color+'&m=Hoi', function (error, response, data){
-        request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sqi&d='+chipId, function (error, response, message){
-            counter++;
-            io.emit('counter', counter);
-            console.log(counter);
-            res.render('test',{title: counter});
-        });
-    });
+    // checks if students understand. If so? Turns teacher to green else give it the proper color
+    if (students.length == 0){
+    	counter = 0;
+    	console.log(counter + 'hoi');
+    	request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sdc&d='+chipId+'&td='+teacherId+'&c=00FF00', function (error, response, data){
+    		request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sqi&d='+chipId, function (error, response, message){
+    			console.log('reset teacher to green');
+    		});
+    	});
+    } else {
+    	request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sdc&d='+chipId+'&td='+teacherId+'&c='+color, function (error, response, data){
+    		request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sqi&d='+chipId, function (error, response, message){
+    			io.emit('counter', counter);
+    			console.log(counter);
+    			console.log(students);
+    			res.render('test',{title: counter});
+    		});
+    	});
+    }
 });
 
 
