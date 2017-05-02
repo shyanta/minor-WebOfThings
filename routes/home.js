@@ -16,7 +16,7 @@ router.get('/', function(req, res){
     amounOfClicks = 15,
     latestClick = '13:15';
 
-    twitter.stream('statuses/filter', {track: 'chanel'})
+    twitter.stream('statuses/filter', {track: 'rotterdam'})
     .on('data', function(tweet) {
         io.emit('new tweet', tweet);
     });
