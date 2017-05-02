@@ -17,7 +17,7 @@ router.get('/reset', function(req, res){
 
     io.emit('reset');
     counter = 0;
-	console.log('reset');
+    console.log('reset');
 
     students.forEach(function(student){
         // Give students feedback
@@ -56,13 +56,13 @@ router.get('/:chipId', function(req,res){
     if (!students.includes(chipId)) {
         students.push(chipId);
         counter++;
-		request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sdc&d='+chipId+'&td='+chipId+'&c=ff0000', function (error, response, data){
-	        request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sqi&d='+chipId, function (error, response, message){
-				console.log(chipId + ' snapt het niet');
-			});
+        request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sdc&d='+chipId+'&td='+chipId+'&c=ff0000', function (error, response, data){
+           request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sqi&d='+chipId, function (error, response, message){
+                console.log(chipId + ' snapt het niet');
+           });
 	    });
     } else {
-		students.pop(chipId);
+        students.splice(students.indexOf(chipId),1);
 		request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sdc&d='+chipId+'&td='+chipId+'&c=00ff00', function (error, response, data){
 	        request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sqi&d='+chipId, function (error, response, message){
 				console.log(chipId + ' snapt het weer');
@@ -81,20 +81,28 @@ router.get('/:chipId', function(req,res){
         color = 'FF0000';
     }
 
-    request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sdc&d='+chipId+'&td='+teacherId+'&c='+color, function (error, response, data){
-        request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sqi&d='+chipId, function (error, response, message){
-            io.emit('counter', counter);
-            console.log(counter);
-			console.log(students);
 			if (students.length == 0){
-				res.redirect('/reset');
 				counter = 0;
-				console.log(counter);
+				console.log(counter + 'hoi');
+				request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sdc&d='+chipId+'&td='+teacherId+'&c=00FF00', function (error, response, data){
+					request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sqi&d='+chipId, function (error, response, message){
+						console.log('reset teacher to green');
+					});
+				});
 			} else {
-            	res.render('test',{title: counter});
+				request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sdc&d='+chipId+'&td='+teacherId+'&c='+color, function (error, response, data){
+					request('https://oege.ie.hva.nl/~palr001/icu/api.php?t=sqi&d='+chipId, function (error, response, message){
+						io.emit('counter', counter);
+						console.log(counter);
+						console.log(students);
+            			res.render('test',{title: counter});
+					});
+				});
 			}
-        });
-    });
+    // });
+	// if (counter === 0 ) {
+	// 	res.redirect('/reset');
+	// }
 });
 
 
